@@ -16,17 +16,22 @@ except:
 
 print(f"The user was asked the folling questions. A response of 'NO RESPONSE' indicates that the user did not respond to the question.\n")
 
-# Create a dictionary mapping question names to their titles
-questions = {q['name']: q['title'] for q in questions_data['elements']}
+# Create a dictionary mapping question names to their titles and correct answers
+questions = {
+    q['name']: {
+        'title': q['title'],
+        'correctAnswer': q.get('correctAnswer', 'Unknown')
+    } for q in questions_data['elements']
+}
 
 # Format and display each question with its answer
-for q_name, title in questions.items():
-    print(f"\n# {title}")
+for q_name, q_info in questions.items():
+    print(f"\n# {q_info['title']}")
     
     # Get the corresponding answer if it exists
     answer_data = answers_data.get(q_name, {})
     user_answer = answer_data.get('value', 'NO RESPONSE')
-    expected_answer = answer_data.get('correctAnswer', 'Unknown')
+    expected_answer = q_info['correctAnswer']  # Get correct answer from questions data
     is_correct = answer_data.get('isCorrect', False)
     
     # Print formatted results
