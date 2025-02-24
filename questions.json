@@ -1,0 +1,37 @@
+{
+    "title": "Quiz Time!",
+    "showProgressBar": "bottom",
+    "startSurveyText": "Let's get started!",
+    "showNavigationButtons": false,
+    "elements": [{
+        "type": "radiogroup",
+        "name": "civilwar",
+        "title": "When was the American Civil War?",
+        "isRequired": true,
+        "choices": [
+            "1796-1803", "1810-1814", "1861-1865", "1939-1945"
+        ],
+        "correctAnswer": "1861-1865"
+    }, {
+        "type": "radiogroup",
+        "name": "capital",
+        "title": "What is the capital of France?",
+        "isRequired": true,
+        "choices": [
+            "Paris", "London", "Berlin", "Madrid"
+        ],
+        "correctAnswer": "Paris"
+    }, {
+        "type": "checkbox",
+        "name": "favoriteFood",
+        "title": "What is your favorite food?",
+        "choices": [
+          "Pizza",
+          "Popcorn",
+          "Plantains",
+          "Poy"
+        ],
+        "isRequired": true,
+        "correctAnswer": ["Pizza", "Popcorn"]
+      }]
+}

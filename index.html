@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My First Survey</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="survey/defaultV2.min.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <div id="surveyContainer"></div>
+
+    <script type="text/javascript" src="survey/survey.core.min.js"></script>
+    <script type="text/javascript" src="survey/survey-js-ui.min.js"></script>
+    <script>
+        let survey;
+        let saveTimeout;
+        let answers = {};
+
+        Promise.all([
+            fetch('/questions.json')
+                .then(response => response.json())
+                .catch(() => {
+                    alert('Error: questions.json not found');
+                    return {};
+                }),
+            fetch('/answers.json')
+                .then(response => response.json())
+                .catch(() => ({}))
+        ])
+        .then(([surveyJson, persistedAnswers]) => {
+            answers = persistedAnswers;
+
+            survey = new Survey.Model(surveyJson);
+            survey.data = answersToData();
+            survey.onValueChanged.add(onValueChanged);
+            survey.render(document.getElementById("surveyContainer"));
+        })
+        .catch(error => console.error('Error loading data:', error));
+
+        function answersToData() {
+            const data = {};
+            for (const [name, answer] of Object.entries(answers)) {
+                data[name] = answer.value;
+            }
+            return data;
+        }
+
+        function onValueChanged(sender, options, a, b, c, d) {
+            const question = options.question;
+            answers[question.name] = {
+                value: question.value,
+                correctAnswer: question.correctAnswer,
+                isCorrect: question.isAnswerCorrect(),
+            };
+
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => saveAnswers(), 500);
+        }
+
+        function saveAnswers() {
+            const results = JSON.stringify(answers);
+            
+            fetch('/answers', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: results
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .catch(error => console.error('Error posting answers:', error));
+        }
+    </script>
+</body>
+</html>
