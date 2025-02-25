@@ -11,7 +11,7 @@
 
     <script type="text/javascript" src="survey/survey.core.min.js"></script>
     <script type="text/javascript" src="survey/survey-js-ui.min.js"></script>
-    <script type="text/javascript" src="survey/borderless-light.min.js"></script>
+    <script type="text/javascript" src="survey/borderless-dark.min.js"></script>
     <script>
         let survey;
         let saveTimeout;
@@ -32,7 +32,7 @@
             answers = persistedAnswers;
 
             survey = new Survey.Model(surveyJson);
-            survey.applyTheme(SurveyTheme.BorderlessLight);
+            survey.applyTheme(SurveyTheme.BorderlessDark);
             survey.data = answersToData();
             survey.onValueChanged.add(onValueChanged);
             survey.render(document.getElementById("surveyContainer"));
