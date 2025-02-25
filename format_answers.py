@@ -14,7 +14,16 @@ try:
 except:
     answers_data = {}
 
+print(f"# Quiz Results")
+
 print(f"The user was asked the folling questions. A response of 'NO RESPONSE' indicates that the user did not respond to the question.\n")
+
+# Calculate total questions and number correct
+total_questions = len(questions_data['elements'])
+correct_answers = sum(1 for answer in answers_data.values() if answer.get('isCorrect', False))
+
+print(f"## SCORE:\n{correct_answers} out of {total_questions} questions correct ({(correct_answers/total_questions)*100:.1f}%)\n")
+print(f"## QUESTIONS:\n")
 
 # Create a dictionary mapping question names to their titles and correct answers
 questions = {
@@ -26,7 +35,7 @@ questions = {
 
 # Format and display each question with its answer
 for q_name, q_info in questions.items():
-    print(f"\n# {q_info['title']}")
+    print(f"### {q_info['title']}")
     
     # Get the corresponding answer if it exists
     answer_data = answers_data.get(q_name, {})
@@ -38,3 +47,4 @@ for q_name, q_info in questions.items():
     print(f"- user response: {user_answer}")
     print(f"- expected response: {expected_answer}")
     print(f"- is correct? {'yes' if is_correct else 'no'}")
+    print("")
