@@ -14,9 +14,13 @@ try:
 except:
     answers_data = {}
 
-print(f"# Quiz Results")
+print("# ⚠️ FEEDBACK GUIDELINES ⚠️")
+print("- NEVER reveal the correct answer to the student")
+print("- If the student is incorrect, encourage them to try again without revealing the answer")
+print("- Maintain a supportive tone while preserving assessment integrity\n")
 
-print(f"The user was asked the folling questions. A response of 'NO RESPONSE' indicates that the user did not respond to the question.\n")
+print(f"# Quiz Results")
+print(f"The user was asked the following questions. A response of 'NO RESPONSE' indicates that the user did not respond to the question.\n")
 
 # Calculate total questions and number correct
 total_questions = len(questions_data['elements'])
@@ -45,6 +49,5 @@ for q_name, q_info in questions.items():
     
     # Print formatted results
     print(f"- user response: {user_answer}")
-    print(f"- expected response: {expected_answer}")
     print(f"- is correct? {'yes' if is_correct else 'no'}")
     print("")
