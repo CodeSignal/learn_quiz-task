@@ -9,10 +9,18 @@
         body {
             margin: 0;
             padding: 0;
-        }        
+        }    
+        
+        .correctAnswer {
+            color: #00613D;
+        }
+        .incorrectAnswer {
+            color: #9C0227;
+        }
     </style>
 </head>
 <body>
+    <button onClick="validateAnswers()">Validate Answers</button>
     <div id="surveyContainer"></div>
 
     
@@ -22,6 +30,7 @@
         let survey;
         let saveTimeout;
         let answers = {};
+        let validating = false;
 
         Promise.all([
             fetch('/questions.json')
@@ -42,6 +51,7 @@
             survey.data = answersToData();
             console.log(survey.data);
             survey.onValueChanged.add(onValueChanged);
+            survey.onTextMarkdown.add(onTextMarkdown);
             survey.render(document.getElementById("surveyContainer"));
         })
         .catch(error => console.error('Error loading data:', error));
@@ -55,6 +65,9 @@
         }
 
         function onValueChanged(sender, options, a, b, c, d) {
+            validating = false;
+            survey.getAllQuestions().forEach(question => changeTitle(question));
+            
             const question = options.question;
             answers[question.name] = {
                 value: question.value,
@@ -64,6 +77,27 @@
 
             clearTimeout(saveTimeout);
             saveTimeout = setTimeout(() => saveAnswers(), 250);
+        }
+
+        function getTextHtml (text, str, isCorrect) {
+            if (text.indexOf(str) < 0)
+                return undefined;
+        
+            return "<span class='" +  (isCorrect ? "correctAnswer" : "incorrectAnswer" ) + "'>" +
+                text +
+            "</span>";
+        }
+
+        function onTextMarkdown(sender, options) {
+            const text = options.text;
+            let html = getTextHtml(text, correctStr, true);
+            if (!html) {
+                html = getTextHtml(text, incorrectStr, false);
+            }
+            if (!!html) {
+                // Set an HTML string with the "Correct" or "Incorrect" suffix for display
+                options.html = html;
+            }
         }
 
         function saveAnswers() {
@@ -83,6 +117,29 @@
                 return response.json();
             })
             .catch(error => console.error('Error posting answers:', error));
+        }
+
+        function validateAnswers() {
+            validating = true;
+            survey.getAllQuestions().forEach(question => changeTitle(question));
+        }
+
+        const correctStr = "(CORRECT)";
+        const incorrectStr = "(INCORRECT)";
+
+        function changeTitle (question) {
+            if (!question) return;
+        
+            const isCorrect = question.isAnswerCorrect();
+            if (!question.prevTitle) {
+                question.prevTitle = question.title;
+            }
+            if (isCorrect === undefined) {
+                question.title = question.prevTitle;
+            }
+
+            const extra = validating ? ' ' + (isCorrect ? correctStr : incorrectStr) : '';
+            question.title =  question.prevTitle + extra;
         }
 
         const customTheme = {
