@@ -20,7 +20,6 @@
     </style>
 </head>
 <body>
-    <button onClick="validateAnswers()">Validate Answers</button>
     <div id="surveyContainer"></div>
 
     
@@ -31,6 +30,39 @@
         let saveTimeout;
         let answers = {};
         let validating = false;
+        let socket = null;
+
+        // Initialize WebSocket connection
+        function connectWebSocket() {
+            try {
+                socket = new WebSocket(`ws://${window.location.host}`);
+                
+                socket.onopen = () => {
+                    console.log('WebSocket connected');
+                };
+
+                socket.onmessage = (event) => {
+                    validateAnswers();
+                };
+
+                socket.onclose = () => {
+                    console.log('WebSocket disconnected');
+                    
+                    // Try to reconnect after a few seconds
+                    setTimeout(connectWebSocket, 5000);
+                    socket = null;
+                };
+
+                socket.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                };
+            } catch (e) {
+                console.error('Failed to connect WebSocket:', e);
+                
+                // Try to reconnect after a few seconds
+                setTimeout(connectWebSocket, 5000);
+            }
+        }
 
         Promise.all([
             fetch('/questions.json')
@@ -53,6 +85,9 @@
             survey.onValueChanged.add(onValueChanged);
             survey.onTextMarkdown.add(onTextMarkdown);
             survey.render(document.getElementById("surveyContainer"));
+            
+            // Connect to the WebSocket server after survey is initialized
+            connectWebSocket();
         })
         .catch(error => console.error('Error loading data:', error));
 
