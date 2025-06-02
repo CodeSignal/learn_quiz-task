@@ -72,7 +72,13 @@
                     return {};
                 }),
             fetch('/answers.json')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        // If file doesn't exist (404) or other error, return empty object
+                        return {};
+                    }
+                    return response.json();
+                })
                 .catch(() => ({}))
         ])
         .then(([surveyJson, persistedAnswers]) => {
