@@ -97,7 +97,7 @@ exit 0
 ## FAQ
 
 ### my questions aren't showing up in the survey
-Are you sure you didn't store your particular questions in a path different then the one used in the `setup.sh` file?
+Are you sure you didn't store your particular questions in a path different than the one used in the `setup.sh` file?
 
 ### I'm getting errors after copying the exact scripts provided here
 Ensure you are using the latest release of this repository. While the script assume version 0.7, it could very well be that a bug was fixed somewhere down the line and a newer release fixes the issues.
