@@ -41,7 +41,7 @@ curl -X POST localhost:3000/validate &> /dev/null
 
 The 2 main dependencies required for this project are python and node. Both can be gotten in the python base images, since every base image contains node as well. A few files need to be created to make the solution work standalone.
 
-And example can be found [here](https://app-staging.codesignal.dev/question/NzuLaf2PfcWuxhmAD/)
+An example can be found [here](https://app-staging.codesignal.dev/question/NzuLaf2PfcWuxhmAD/)
 ### setup.sh
 
 ```bash
