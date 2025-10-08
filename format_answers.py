@@ -20,7 +20,7 @@ print(f"The user was asked the folling questions. A response of 'NO RESPONSE' in
 
 # Calculate total questions and number correct
 total_questions = len(questions_data['elements'])
-correct_answers = sum(1 for answer in answers_data.values() if answer.get('isCorrect', False))
+correct_answers = sum(1 for answer in answers_data.values() if hasattr(answer, 'get') and answer.get('isCorrect', False))
 
 print(f"## SCORE:\n{correct_answers} out of {total_questions} questions correct ({(correct_answers/total_questions)*100:.1f}%)\n")
 print(f"## QUESTIONS:\n")
