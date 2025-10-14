@@ -94,6 +94,13 @@ python3 format_answers.py
 exit 0
 ```
 
+### View settings
+
+The expected setup in the view settings (present either on the course level or on the task level):
+- Task Preview: "Full Screen"
+- Task Preview URL Header: "Hidden"
+- Refresh Preview on Run: "Disabled"
+
 ## FAQ
 
 ### my questions aren't showing up in the survey
