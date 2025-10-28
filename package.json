@@ -1,0 +1,24 @@
+{
+  "name": "learn_quiz-task",
+  "version": "1.0.0",
+  "description": "A quiz engine for Learn",
+  "homepage": "https://github.com/CodeSignal/learn_quiz-task#readme",
+  "bugs": {
+    "url": "https://github.com/CodeSignal/learn_quiz-task/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeSignal/learn_quiz-task.git"
+  },
+  "license": "ISC",
+  "author": "CodeSignal",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.3"
+  }
+}
